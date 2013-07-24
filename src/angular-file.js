@@ -306,13 +306,14 @@ angular.module('ur.file', []).config(['$provide', function($provide) {
         stop(e);
         if (attrs.overClass) element.removeClass(attrs.overClass);
         isOver = false;
+        e = e.originalEvent || e;
         var files = e.dataTransfer.files;
 
         if (!files.length) return;
         files = multiple ? files : files[0];
 
         if (modelExpr) modelExpr.assign(scope, files);
-        if (!dropExpr) return;
+        if (!dropExpr) return (scope.$$phase) ? null : scope.$apply();
 
         var local = { $event: e };
         local['$file' + (multiple ? 's' : '')] = files;
