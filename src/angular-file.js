@@ -1,7 +1,9 @@
 /**
- * @license ur-file v0.1a
- * (c) 2013 Union of RAD, LLC http://union-of-rad.com/
- * License: BSD
+ * ur.file: Native HTML5-based file input bindings for AngularJS
+ *
+ * @version 0.9a
+ * @copyright (c) 2013 Union of RAD, LLC http://union-of-rad.com/
+ * @license: BSD
  */
 
 
@@ -113,7 +115,7 @@ angular.module('ur.file', []).config(['$provide', function($provide) {
     return $delegate;
   });
 
-}]).service('fileHandler', ['$q', function($q) {
+}]).service('fileHandler', ['$q', '$rootScope', function($q, $rootScope) {
 
   return {
 
@@ -124,11 +126,21 @@ angular.module('ur.file', []).config(['$provide', function($provide) {
       var deferred = $q.defer();
 
       var reader = angular.extend(new FileReader(), {
-        onload: function(e) { deferred.resolve(e.target.result); },
-        onerror: function(e) { deferred.reject(e); },
-        onabort: function(e) { deferred.reject(e); },
+        onload: function(e) {
+          deferred.resolve(e.target.result);
+          if (!$rootScope.$$phase) $rootScope.$apply();
+        },
+        onerror: function(e) {
+          deferred.reject(e);
+          if (!$rootScope.$$phase) $rootScope.$apply();
+        },
+        onabort: function(e) {
+          deferred.reject(e);
+          if (!$rootScope.$$phase) $rootScope.$apply();
+        }
         // onprogress: Gee, it'd be great to get some progress support from $q...
-      }).readAsDataURL(file);
+      });
+      reader.readAsDataURL(file);
 
       return angular.extend(deferred.promise, {
         abort: function() { reader.abort(); }
