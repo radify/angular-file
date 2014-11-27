@@ -59,7 +59,7 @@ angular.module('ur.file', []).config(['$provide', function($provide) {
   /**
    * Hook into $httpBackend to intercept requests containing files.
    */
-  $provide.decorator('$httpBackend', function($delegate, $window, uploadManager) {
+  $provide.decorator('$httpBackend', ['$delegate', '$window', 'uploadManager', function($delegate, $window, uploadManager) {
     return function(method, url, post, callback, headers, timeout, wc) {
       var containsFile = false, result = null, manager = uploadManager;
 
@@ -84,7 +84,7 @@ angular.module('ur.file', []).config(['$provide', function($provide) {
       }
       $delegate(method, url, post, callback, headers, timeout, wc);
     };
-  });
+  }]);
 
   /**
    * Checks an object hash to see if it contains a File object, or, if legacy is true, checks to
@@ -106,14 +106,14 @@ angular.module('ur.file', []).config(['$provide', function($provide) {
    * Prevents $http from executing its default transformation behavior if the data to be
    * transformed contains file data.
    */
-  $provide.decorator('$http', function($delegate) {
+  $provide.decorator('$http', ['$delegate', function($delegate) {
     var transformer = $delegate.defaults.transformRequest[0];
 
     $delegate.defaults.transformRequest = [function(data) {
       return data instanceof Blob ? data : transformer(data);
     }];
     return $delegate;
-  });
+  }]);
 
 }]).service('fileHandler', ['$q', '$rootScope', function($q, $rootScope) {
 
