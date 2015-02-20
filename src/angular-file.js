@@ -68,8 +68,11 @@ angular.module('ur.file', []).config(['$provide', function($provide) {
       }
 
       if (angular.isObject(post)) {
+        if (post && post.name && !headers['X-File-Name']) {
+          headers['X-File-Name'] = encodeURI(post.name);
+        }
+
         angular.forEach({
-          name: 'X-File-Name',
           size: 'X-File-Size',
           lastModifiedDate: 'X-File-Last-Modified'
         }, function(header, key) {

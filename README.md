@@ -41,3 +41,5 @@
  * `change`: Typical change event. Triggered when a file is selected.
 
  * `Files.prototype.$save.call()`: Treats the file object as an instance of `$resource`, and POSTs the raw contents of the file to the configured URL. The upload handler also sets four headers: `X-File-Name`, `X-File-Size`, `X-File-Last-Modified`, and `Content-Type`.
+
+The `X-File-Name` header is encoded with URL encoding. 
