@@ -15,7 +15,7 @@ Also, please include the following:
 
 ## Bugs and Other Issues
 
-* Report problems to the project's [issue tracker](https://github.com/radify/PROJECTNAME/issues).
+* Report problems to the project's [issue tracker](https://github.com/radify/angular-file/issues).
 * You can help us diagnose and fix existing bugs by asking and providing answers for the following:
     * Is the bug reproducible as explained?
     * Is it reproducible in other environments (for instance, on different browsers or devices)?
